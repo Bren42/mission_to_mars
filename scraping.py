@@ -90,6 +90,61 @@ def mars_facts():
 
 
 
+# 1. Use browser to visit the URL
+url = 'https://marshemispheres.com/'
+
+browser.visit(url)
+
+
+# In[53]:
+
+
+# 2. Create a list to hold the images and titles.
+hemisphere_image_urls = []
+# 3. Write code to retrieve the image urls and titles for each hemisphere.
+for hemis in range(4):
+    # Browse through each article
+    browser.links.find_by_partial_text('Hemisphere')[hemis].click()
+
+    # Parse the HTML
+    html = browser.html
+    hemi_soup = soup(html,'html.parser')
+
+    # Scraping
+    title = hemi_soup.find('h2', class_='title').text
+    img_url = hemi_soup.find('li').a.get('href')
+
+    # Store findings into a dictionary and append to list
+    hemispheres = {}
+    hemispheres['img_url'] = f'https://marshemispheres.com/{img_url}'
+    hemispheres['title'] = title
+    hemisphere_image_urls.append(hemispheres)
+
+    # Browse back to repeat
+    browser.back()
+
+
+# In[54]:
+
+
+# 4. Print the list that holds the dictionary of each image url and title.
+hemisphere_image_urls
+
+
+# In[55]:
+
+
+# 5. Quit the browser
+browser.quit()
+
+
+
+
+
+
+
+
+
 if __name__ == "__main__":
     # If running as script, print scraped data
     print(scrape_all())
